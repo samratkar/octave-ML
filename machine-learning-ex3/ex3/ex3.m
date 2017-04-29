@@ -2,6 +2,7 @@
 %% Added to github.
 %% testing the git from atom.
 %% 2:17 pmm updates.
+%% TEST
 %% Machine Learning Online Class - Exercise 3 | Part 1: One-vs-all
 
 %  Instructions
