@@ -1,6 +1,7 @@
 %% test git pull
-%% Added to github. 
-
+%% Added to github.
+%% testing the git from atom.
+%% 2:17 pmm updates.
 %% Machine Learning Online Class - Exercise 3 | Part 1: One-vs-all
 
 %  Instructions
@@ -60,9 +61,9 @@ fprintf('\nTesting lrCostFunction() with regularization');
 
 theta_t = [-2; -1; 1; 2]; % 4 thetas. That means we have 3 features in the test set (x0 to x3). [4*1 matrix] -> 1
 % feature matrix has 5 rows and 4 columns. Hence row vector is used for feature set. [5*4 matrix] -> 2
-X_t = [ones(5,1) reshape(1:15,5,3)/10];  
+X_t = [ones(5,1) reshape(1:15,5,3)/10];
 % Y is a column vector of 5 elements. -> 3
-% Combining 1, 2 and 3 we can say that we need a column vector of 5 size after multiplicaiton of 
+% Combining 1, 2 and 3 we can say that we need a column vector of 5 size after multiplicaiton of
 % 1 and 2. So, we need to vectorize the hypothesis as  X * theta
 y_t = ([1;0;1;0;1] >= 0.5);
 lambda_t = 3;

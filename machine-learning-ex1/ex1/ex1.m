@@ -1,5 +1,4 @@
-%% Machine Learning Online Class - Exercise 1: Linear Regression
-
+% Machine Learning Online Class - Exercise 1: Linear Regression
 %  Instructions
 %  ------------
 %
@@ -24,7 +23,7 @@
 %
 
 %% Initialization
-clear ; close all; clc
+clear ; close all; clc;
 
 %% ==================== Part 1: Basic Function ====================
 % Complete warmUpExercise.m
