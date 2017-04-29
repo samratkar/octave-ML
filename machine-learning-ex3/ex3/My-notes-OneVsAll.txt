@@ -1,0 +1,190 @@
+File - ex3.m
+
+The problem statement is to be able to design a handwriting recognition system. To make the problem simple,
+we are dealing with only single digits 0-9 handwritten in grayscale of 20*20 pixels each. We need to design
+a classifier which will be able to take up any such picture of a handwritten digit and would be able to predict
+the numerical value in the picture.
+
+This file builds a one-vs-All logistic regression classifier.
+"one-vs-all" means that there are more than one labels (all) to which the inputs need to be classified.
+"one" refers to each input which need to undergo the decision to which label it needs to affiliate with.
+
+Theta is the heart of the entire algorithm which enables the classification.
+Theta causes --> h(theta).
+h(theta) causes --> g(h(theta)).
+And it is the g function (sigmoid) which classifies the inputs to one or the other labels.
+
+The data set that is provided for this problem is a collection of 5000 pictures - each of digits 0-9.
+Each picture (of a digit) is a 20*20 pixel grayscale image.
+
+The Training data is as follows -
+
+----------------------------------------
+    Inputs(X)             Outputs (y)
+----------------------------------------
+    Picture# 1            0
+    Picture# 2            1
+    Picture# 3            4
+    Picture# 4            7
+    Picture# 5            1
+    Picture# 6            5
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    ...                   ...
+    Picture# 5000         8
+--------------------------------------------
+
+What is expected of us is to create a learning algorithm with the above training set, so that
+if any picture of one of the ten digits is given as input to the alorithm, it should be able to predict the actual
+numerical digit that is present in the picture.
+
+Each pixel of a picture is represented as a floating point number indicating the magnitude of the grayscale of
+the position that the pixel occupies.
+So, each pixel in-turn can be represented as 20*20 matrix of folating point numbers.
+So, to be able to represent the input values, we need a matrix of 5000 rows, where each row is a 20*20 matrix for one
+digit each. Each element of this matrix is a floating point number for the grayscale of each pixel.
+So, we end up having a column vector with each element in the column vector as itself a matrix of 20*20 dimension.
+We go ahead simplifying this by 'un-rolling' each 20*20 matrix for each row, to a row vector of 400 lenght.
+The idea is to hold the same values in uni-dimensional data structure.
+This will enable us to manage the overall feature matrix better in a simpler way.
+The input table is transformed numerically into the following matrix, based on the above scheme -
+
+------------------------------------------------------------------------------------------------------------------
+Picture#     |        Row matrix of the 'rolled out' floating point numbers of all the 400 pixels of the picture
+             |        x0      x1      x2      x3      x4      x5      x6      x7      ...     ...     ...  x400
+-------------|----------------------------------------------------------------------------------------------------
+Picture# 1   |        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ...     ...      ...  0110x
+Picture# 2   |        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ...     ...      ...  0110x
+Picture# 3   |        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ..      ...      ...  0110x
+Picture# 4   |        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ..      ...      ...  0110x
+Picture# 5   |        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ..      ...      ...  0110x
+Picture# 6   |        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ..      ...      ...  0110x
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+...          |        ...     ...     ...     ...     ...     ...     ...     ...     ...     ...      ...  ...
+Picture# 5000|        0001x   1010x   0010x   1000x   1010x   1010x   1010x   1010x   ...     ...      ...  0110x
+------------------------------------------------------------------------------------------------------------------
+
+Now, given the training set, we need to design our algorithm to learn the training set so that it would be able to
+predict the numerical value of an arbitrary picture of 20*20 pixels of grayscale of the handwritten numbers are provided.
+
+So, here the following input values are provided which we will use as training set -
+1. Feature matrix of 400 Xs for each of the 5000 data set. This is the above matrix.
+2. Output vector of the actual numberical value of each of the 5000 picture. This is a vector of 5000 elements.
+
+The desired output is a theta matrix that would be trained to produce the given mapping.
+Using the above two input training sets, we need to train our parameter matrix of thetas to predict.
+Parameter matrix (theta) which will be able to map a new test input to a correct output.
+While constructing the theta matrix, we should not focus on the number of training sets.
+But rather number of X's for each training set. Each x will be associated with one theta.
+Here we have 400 X's. These would need to mapped to 10 possible output values.
+Number of hypothesis (g(h(theta)) would be always equal to the number of output labels. And each such g(h(theta))
+would be associated with all these 400 X's.
+The theta matrix will be determined by the gradient descent which would go towards minimizing the cost function,
+based out of the 5000 training sets.
+
+----------------------------------------------------------------------------------------------------------------------
+Features     Parameters (always equal to number of features)            Number of unique hypothesis (number of labels)
+----------------------------------------------------------------------------------------------------------------------
+x0           theta0                                                     0
+x1           theta1                                                     1
+x2           theta2                                                     2
+x3           theta3                                                     3
+x4           theta4                                                     4
+...          ...                                                        5
+...          ...                                                        6
+...          ...                                                        7
+x400         theta400                                                   8
+                                                                        9
+---------------------------------------------------------------------------------------------------------------------
+
+So, we will have 10 equations, each of those equations will have 400 Xs and 400 thetas.
+The equation is of the form sigmoid(h(x)), where h(x) = theta0 * x0 + theta1 * x1 + theta2 * x2 .... theta400 * x400
+This theta matrix is found though gradient descent which substitutes the above equation with all the 5000 data set,
+and computes the cost function, which is the difference between the value predicted and the actual value.
+Once gradient descent computes the most optimum theta with the least cost, it stopes and we get the final theta matrix.
+
+Using that theta matrix, now we predict for a given test feature matrix.
+
+In this example, following things are peculiar -
+1. Test test is same as the training set.
+2. gradient descent is computed by a non-standard method known as fmincg(). This is not an octave method.
+   Rather a customized method written by Prof Andrew and his students. This method is called by the method
+   oneVsAll() which uses this gradient descent variant method fmincg() which computes the optimum theta
+   based out of the 5000 data set.
+
+Once the theta matrix is computed by oneVsAll(), the next method predictOneVsAll() is called to use the
+theta matrix to predict the output based out of the 5000 test set (which happens to be same as the training set)
+
+-----------------------------
+CLASSIFICATION LOGIC -
+-----------------------------
+Another thing to note in this case is to corerctly determine predicted value. As is the case with all
+Classification algorithms, determining g(h(x)) is not the final thing. g() which is the sigmoid gives merely the
+probability value out of the inputs values. It does not classify by itself to the labels we have.
+We need to have another logic which will translate the probabily number to the respective labels.
+So, we have a matrix something like this after the sigmoid() is applied to the trained thetas -
+
+For every classifier, determining the predicted values. Each row is dedicated
+for one classifier, and that contains predicted value for all 5000 data points.
+g1 to g10 are the rows, one for each classifier. columns are the values for each
+training set. so the matrix looks like the following -
+---------------------------------------------------------------------------------------------
+Hypothesis              trg set 1           trg set 2     trg set 3     ...   trg set 5000
+---------------------------------------------------------------------------------------------
+probability for 1           g1                  g1            g1                    g1
+probability for 2           g2                  g2            g2                    g2
+probability for 3           g3                  g3            g3                    g3
+                            ..                  ..            ..                    ..
+                            ..                  ..            ..                    ..
+probability for 0           g10                 g10           g10                   g10
+---------------------------------------------------------------------------------------------
+
+ We will have to come up with a predicted vector based on the classificagtion logic that for any trg set,
+ we will choose only the max g. i.e. only that hypothesis will be selected for a given input in the training set
+ out of all the 5000 training sets, that has the highest probability.
+
+ So, we end up prdicting the output vector as follows -
+
+ ----------------------------------------------------------------------------------------------------
+ Hypothesis              trg set 1           trg set 2     trg set 3     ...   trg set 5000
+ ----------------------------------------------------------------------------------------------------
+ probability for 1           g1                  g1            g1                    g1
+ probability for 2           g2                  g2            g2                    g2
+ probability for 3           g3                  g3            g3                    g3
+                             ..                  ..            ..                    ..
+                             ..                  ..            ..                    ..
+ probability for 0           g10                 g10           g10                   g10
+-------------------------------------------------------------------------------------------------------
+ max probability           max(trg set1)         max(trg set2)  max(trg set3)         max(trg set5000)
+-------------------------------------------------------------------------------------------------------
+
+So, our predicted vector is the max values from each column. Its is not over still!! The Max value is
+the probability value. But the predicted values need to 0 to 9, and not the probability value.
+Hence we will use a trick. We will predict the index of the highest probability. Because in this case,
+the index number for each column gives the label number!
+Hence the following code in predictOneVsAll()-
+
+h = sigmoid (all_theta * X');
+[max_value, label_index] = (max(h));
+p = label_index'
