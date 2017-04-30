@@ -1,10 +1,4 @@
-%% test git pull
-%% Added to github.
-%% testing the git from atom.
-%% 2:17 pmm updates.
-%% TEST
 %% Machine Learning Online Class - Exercise 3 | Part 1: One-vs-all
-
 %  Instructions
 %  ------------
 %
@@ -20,8 +14,8 @@
 %  For this exercise, you will not need to change any code in this file,
 %  or any other files other than those mentioned above.
 %
-
 %% Initialization
+
 clear ; close all; clc
 
 %% Setup the parameters you will use for this part of the exercise
