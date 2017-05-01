@@ -11,14 +11,14 @@ size_layer2 = 25; % one added for bias
 size_layer3 = 10; % output layer. So no need to add bias.
 
 
-% You need to return the following variables correctly 
+% You need to return the following variables correctly
 p = zeros(size(X, 1), 1);
 
 
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
-%               your learned neural network. You should set p to a 
+%               your learned neural network. You should set p to a
 %               vector containing labels between 1 to num_labels.
 %
 % Hint: The max function might come in useful. In particular, the max
@@ -27,26 +27,28 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
-% Add bias for x0 to the input layer
-X = [ones(m,1) X]; % 5000 * 401 matrix 
-% determining the 1st hidden layer
+% Add bias for x0 to the input layer. Point to be noted is that we are using X here.
+X = [ones(m,1) X]; % 5000 * 401 matrix
+% determining the 1st hidden layer. Point to be noted is that we are using X' here.
 a2 = sigmoid(Theta1 * X');  % 25 * 5000 matrix
-% Add bias for a2  
-a2 = [ones(1, m) ; a2]; % 26 * 5000 matrix 
-a3 = sigmoid(Theta2 * a2); % 10 * 5000 matrix 
+% Add bias for a2.
+a2 = [ones(1, m) ; a2]; % 26 * 5000 matrix
+%Point to be noted is that we are using X here, and not X', because X is already transposed
+%due to the previous layer's matrix multiplication.
+a3 = sigmoid(Theta2 * a2); % 10 * 5000 matrix
 
-%a3 looks as following - 
+%a3 looks as following -
 %for every classifier, determining the predicted values. Each row is dedicated
 %for one classifier, and that contains predicted value for all 5000 data points.
-% h1 to h10 are the rows, one for each classifier. columns are the values for each 
-% training set. so the matrix looks like the following - 
+% h1 to h10 are the rows, one for each classifier. columns are the values for each
+% training set. so the matrix looks like the following -
 %   trg set 1           trg set 2     trg set 3     ...   trg set 5000
 %     h1                  h1            h1                    h1
 %     h2                  h2            h2                    h2
 %     h3                  h3            h3                    h3
 %     ..                  ..            ..                    ..
 %     ..                  ..            ..                    ..
-%     h_num_labels        h_numlabels   hnumlabels            h_numblabels 
+%     h_num_labels        h_numlabels   hnumlabels            h_numblabels
 % =========================================================================
 
 [max_value, label_index] = (max(a3));
