@@ -1,0 +1,6 @@
+-------------------
+COST FUNCTION
+-------------------
+While finding the cost function for neural nets, do not get bogged by the number of layers.
+Just find the g(h(x)) for the entire neural net, and sum up the costs for the corresponding y for
+each otuput node for each row. Thats it. 
