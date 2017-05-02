@@ -48,17 +48,50 @@ size_layer2 = 25; % one added for bias
 size_layer3 = 10; % output layer. So no need to add bias.
 
 % Add bias for x0 to the input layer. Point to be noted is that we are using X here.
-X = [ones(m,1) X]; % 5000 * 401 matrix
+%X = [ones(m,1) X]; % 5000 * 401 matrix
 % determining the 1st hidden layer. Point to be noted is that we are using X' here.
-a2 = sigmoid(Theta1 * X');  % 25 * 5000 matrix
+%a2 = sigmoid(Theta1 * X');  % 25 * 5000 matrix
 % Add bias for a2.
-a2 = [ones(1, m) ; a2]; % 26 * 5000 matrix
+%a2 = [ones(1, m) ; a2]; % 26 * 5000 matrix
 %Point to be noted is that we are using X here, and not X', because X is already transposed
 %due to the previous layer's matrix multiplication.
-a3 = sigmoid(Theta2 * a2); % 10 * 5000 matrix
+%a3 = sigmoid(Theta2 * a2); % 10 * 5000 matrix
+
+%Identify matrix encoder
+I = eye(num_labels);
+%Transforming the y into encoded Y with the help of the identity encoder.
+Y = zeros(m, num_labels);
+for i=1:m
+  Y(i, :)= I(y(i), :);
+end
+
+
+A1 = [ones(m, 1) X];
+Z2 = A1 * Theta1';
+A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)];
+Z3 = A2*Theta2';
+H = A3 = sigmoid(Z3);
+
+
+penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
+
+J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
+J = J + penalty;
+
+Sigma3 = A3 - Y;
+Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
+
+
+Delta_1 = Sigma2'*A1;
+Delta_2 = Sigma3'*A2;
+
+
+Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
+Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
+
 
 %J =  (1/m)*sum (-y.* log (a3) - (1-y).* log (1-a3));
-J = (1/m)*sum(sum((-y).*log(a3) - (1-y).*log(1-a3), 2));
+%J = (1/m)*sum(sum((-y).*log(a3) - (1-y).*log(1-a3), 2));
 
 %J = -1 * (1/m) * J;
 %J = (1/m) * sum(( log(a3)*(-y) - log(1-a3)*(1-y) )) ;% + (lambda/(2*m)) * sum(Theta2(2:26).^2));

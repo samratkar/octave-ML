@@ -1,6 +1,51 @@
--------------------
-COST FUNCTION
--------------------
-While finding the cost function for neural nets, do not get bogged by the number of layers.
-Just find the g(h(x)) for the entire neural net, and sum up the costs for the corresponding y for
-each otuput node for each row. Thats it. 
+----------------------------------------------------------------------------------------
+COST FUNCTION FOR LOGISTIC REGRESSION AND NEURAL NETWORK EMPLOYING LOGISTIC REGRESSION
+----------------------------------------------------------------------------------------
+
+1. IN logistic regressions, there is always a transformation of the y to to a new "transformed Y",
+that is populated to encode the different labels.
+Y TRANSFORMATION - In neural networks, the one thing that is most important is "Y TRANSFORMATION".
+There is a key difference between normal logistic regression and neural networks employing logistic
+regression. In the normal case, we have just one h(theta). So, we need to just find the difference of h(theta)
+with that of y, to determine the cost function. It is true that you need to do some transformation of the y
+to show up the labels. But you do not need to get into the comlexity of different h(theta). You might
+have different labels. But then it is still simple because h(theta) is same. So, after encoding the y,
+you can just find the cost function direction as follows -
+
+While computing the optimal theta using gradient descent you use the following -
+
+for c = 1:num_labels
+ [theta, J, exit_flag] = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);
+ all_theta(c,:) = theta;
+endfor
+
+Note - the third parameter is a transformed y vector, based on the label. But the point is that y still remains
+a vector. Cost function and gradient looks like the following -
+
+J = 1/m * (-y' * log(sigmoid(X * theta)) - (1-y)' * log(1-(sigmoid(X*theta)))) + (lambda/(2*m) * sum(theta(2:n).^2));
+grad = 1/m * X' * (sigmoid(X * theta) - y);
+grad (2:n) = grad (2:n) + lambda/m * theta (2:n) ;
+
+....................
+Neural Network
+....................
+In case of neural network, there are multiple h(theta). TO be able to find the cost of a given h(theta), you
+need its corresponding y. So, along with the transformation of y to encode the labels, you also need a means to
+classify all the y's belonging to one particular h(theta) so that when you do  a matrix multiplication of the
+h(theta) of the newly transformed y, only those members of y are picked up which belong to that particular
+label represented by the corresponding h(theta). Both of these can be easily done using identity matrix transformation.
+Identity matrix works as an encoder, where each row acts as an encoded mapping of each label. You create
+an identity matrix of the size of that of labels. You scoop out appropriate row from this identity matrix,
+and keep stacking it in the transformed Y. The number of row in this transformed Y, is same as the number
+of training set. Each row has a pattern of all zeros and one 1 to encode a unique label.
+It looks something like this -
+
+m = data size.
+I = eye(num_labels)
+for i = 1 : m
+    Y(i,:) = I(y(i), :)
+endfor
+
+The special thing about this transformed Y, is that if you do a matrix multiplication of h(theta) with Y,
+while determining the cost function, all the non relevant values for h(theta) for a particular row of Y,
+will return zero, and hence will be ignored.
