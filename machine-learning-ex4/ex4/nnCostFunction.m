@@ -73,17 +73,6 @@ penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:
 J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
 J = J + penalty;
 
-% BACKWARD PROPAGATION
-Sigma3 = A3 - Y; % 5000*10 matrix
-Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
-
-
-Delta_1 = Sigma2'*A1;
-Delta_2 = Sigma3'*A2;
-
-
-Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
-Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
 
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
@@ -101,6 +90,16 @@ Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)
 %               over the training examples if you are implementing it for the
 %               first time.
 %
+
+% BACKWARD PROPAGATION
+Sigma3 = A3 - Y; % 5000*10 matrix
+Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
+
+
+Delta_1 = Sigma2'*A1;
+Delta_2 = Sigma3'*A2;
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -109,6 +108,8 @@ Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)
 %               and Theta2_grad from Part 2.
 %
 
+Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
+Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
 
 
 
