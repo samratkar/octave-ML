@@ -19,10 +19,12 @@ function [J grad] = nnCostFunction(nn_params, ...
 % reshape(vector input, number of rows, number of columns)
 % Here Theta1 is reashaped into the original matrix of number of rows = hidden layer size (y's)
 %and number of columns = X's = input layer + 1
+% 25 * 401 matrix
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
                  hidden_layer_size, (input_layer_size + 1));
 
 %number of columns is equal to the hidden layer (X's) and number of rows = output layer = num_labels.
+% 10 * 26 matrix
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                  num_labels, (hidden_layer_size + 1));
 
@@ -47,30 +49,23 @@ size_layer1 = size(X, 2) + 1; % no of Xs inputs + x0
 size_layer2 = 25; % one added for bias
 size_layer3 = 10; % output layer. So no need to add bias.
 
-% Add bias for x0 to the input layer. Point to be noted is that we are using X here.
-%X = [ones(m,1) X]; % 5000 * 401 matrix
-% determining the 1st hidden layer. Point to be noted is that we are using X' here.
-%a2 = sigmoid(Theta1 * X');  % 25 * 5000 matrix
-% Add bias for a2.
-%a2 = [ones(1, m) ; a2]; % 26 * 5000 matrix
-%Point to be noted is that we are using X here, and not X', because X is already transposed
-%due to the previous layer's matrix multiplication.
-%a3 = sigmoid(Theta2 * a2); % 10 * 5000 matrix
 
 %Identify matrix encoder
-I = eye(num_labels);
+I = eye(num_labels); %10 * 10 matrix of Identity encoder. it is always num_labels * num_labels
 %Transforming the y into encoded Y with the help of the identity encoder.
-Y = zeros(m, num_labels);
+Y = zeros(m, num_labels); % 5000 * 10 matrix
 for i=1:m
   Y(i, :)= I(y(i), :);
 end
 
 
-A1 = [ones(m, 1) X];
-Z2 = A1 * Theta1';
-A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)];
-Z3 = A2*Theta2';
-H = A3 = sigmoid(Z3);
+A1 = [ones(m, 1) X]; % 5000 * 401 matrix
+%Theta1 = 25*401 matrix. So Theta1' is 401*25 matrix. So Z2 = 5000*25 matrix
+Z2 = A1 * Theta1'; % 5000 * 25 matrix
+A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)]; % 5000*26 matrix
+% Theta2 is 10*26 matrix. So Theta2' is 26*10 matrix
+Z3 = A2*Theta2'; % 5000*10 matrix
+H = A3 = sigmoid(Z3); % 5000*10 matrix
 
 
 penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
@@ -78,7 +73,8 @@ penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:
 J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
 J = J + penalty;
 
-Sigma3 = A3 - Y;
+% BACKWARD PROPAGATION
+Sigma3 = A3 - Y; % 5000*10 matrix
 Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
 
 
@@ -88,23 +84,6 @@ Delta_2 = Sigma3'*A2;
 
 Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
 Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
-
-
-%J =  (1/m)*sum (-y.* log (a3) - (1-y).* log (1-a3));
-%J = (1/m)*sum(sum((-y).*log(a3) - (1-y).*log(1-a3), 2));
-
-%J = -1 * (1/m) * J;
-%J = (1/m) * sum(( log(a3)*(-y) - log(1-a3)*(1-y) )) ;% + (lambda/(2*m)) * sum(Theta2(2:26).^2));
-% GEEMA CODING --
-%J = (1/m) * sum(( log(a3)*(-y) - log(1-a3)*(1-y) )) ;% + (lambda/(2*m)) * sum(Theta2(2:26).^2);
-%I AM BAYMAX YOUR PERSONAL HEALTHCARE COMPANION.
-%-------------------------
-%Theta1_grad = 1/m * X' * (a1 - y);
-%Theta1_grad = grad (2:size_layer1) + lambda/m * theta (2:size_layer1) ;
-
-%Theta2_grad = 1/m * X' * (sigmoid(X * theta) - y);
-%Theta2_grad = grad (2:size_layer1) + lambda/m * theta (2:size_layer1) ;
-
 
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
