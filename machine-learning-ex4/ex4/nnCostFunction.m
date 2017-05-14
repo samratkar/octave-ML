@@ -58,7 +58,7 @@ for i=1:m
   Y(i, :)= I(y(i), :);
 end
 
-
+%FORWARD PROPAGATION.
 A1 = [ones(m, 1) X]; % 5000 * 401 matrix
 %Theta1 = 25*401 matrix. So Theta1' is 401*25 matrix. So Z2 = 5000*25 matrix
 Z2 = A1 * Theta1'; % 5000 * 25 matrix
@@ -70,6 +70,16 @@ H = A3 = sigmoid(Z3); % 5000*10 matrix
 
 penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
 
+%Cost function is the cummulative cost of the entire neural network.
+%Although we have 3 layers here. But the below vectorized formulation of cost function
+%will work for any number of layers. sum(a,2) gives sum of all elements of each row, in a column vector.
+%So, the following internal sum of J is a column vector of one column and 5000 rows. Each row
+%gives the sum of the cost of one trainings set.
+%Always remember that the cost function is sum of all the costs (difference between output and target)
+%for each target combinations. So, we are here summing the values of each cell across each row,
+%and we get a cummulative cost for each row.
+%then we do the external sum() for all the cost elements for each row, to get the cummulative cost
+%for the entire network.
 J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
 J = J + penalty;
 
@@ -110,22 +120,6 @@ Delta_2 = Sigma3'*A2;
 
 Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
 Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 % -------------------------------------------------------------
 

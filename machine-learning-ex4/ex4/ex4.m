@@ -2,9 +2,9 @@
 
 %  Instructions
 %  ------------
-% 
+%
 %  This file contains code that helps you get started on the
-%  linear exercise. You will need to complete the following functions 
+%  linear exercise. You will need to complete the following functions
 %  in this exericse:
 %
 %     sigmoidGradient.m
@@ -21,11 +21,11 @@ clear ; close all; clc
 %% Setup the parameters you will use for this exercise
 input_layer_size  = 400;  % 20x20 Input Images of Digits
 hidden_layer_size = 25;   % 25 hidden units
-num_labels = 10;          % 10 labels, from 1 to 10   
+num_labels = 10;          % 10 labels, from 1 to 10
                           % (note that we have mapped "0" to label 10)
 
 %% =========== Part 1: Loading and Visualizing Data =============
-%  We start the exercise by first loading and visualizing the dataset. 
+%  We start the exercise by first loading and visualizing the dataset.
 %  You will be working with a dataset that contains handwritten digits.
 %
 
@@ -46,15 +46,16 @@ pause;
 
 
 %% ================ Part 2: Loading Parameters ================
-% In this part of the exercise, we load some pre-initialized 
+% In this part of the exercise, we load some pre-initialized
 % neural network parameters.
 
 fprintf('\nLoading Saved Neural Network Parameters ...\n')
 
 % Load the weights into variables Theta1 and Theta2
+%Using pre-trained thetas or weights.
 load('ex4weights.mat');
 
-% Unroll parameters 
+% Unroll parameters
 nn_params = [Theta1(:) ; Theta2(:)];
 
 %% ================ Part 3: Compute Cost (Feedforward) ================
@@ -73,7 +74,8 @@ fprintf('\nFeedforward Using Neural Network ...\n')
 
 % Weight regularization parameter (we set this to 0 here).
 lambda = 0;
-
+%Finding the cost of the entire network based on the weights already provided.
+%This can be found through forward propagation.
 J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, ...
                    num_labels, X, y, lambda);
 
@@ -107,7 +109,7 @@ pause;
 %  Before you start implementing the neural network, you will first
 %  implement the gradient for the sigmoid function. You should complete the
 %  code in the sigmoidGradient.m file.
-%
+%  Note that gradient always means differentiation. So, sigmoid gradient means g(z)'
 
 fprintf('\nEvaluating sigmoid gradient...\n')
 
@@ -125,7 +127,10 @@ pause;
 %  layer neural network that classifies digits. You will start by
 %  implementing a function to initialize the weights of the neural network
 %  (randInitializeWeights.m)
-
+% Here we are not importing the pre-trained thetas. Rather seeding the thetas
+% based on a random seed based on the number of layers and size of the layers.
+% Then we would backward propagate and finalize the theta values.
+% After identifying the thetas (or weights) we can predict via forward propagation.
 fprintf('\nInitializing Neural Network Parameters ...\n')
 
 initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
@@ -173,7 +178,7 @@ pause;
 
 
 %% =================== Part 8: Training NN ===================
-%  You have now implemented all the code necessary to train a neural 
+%  You have now implemented all the code necessary to train a neural
 %  network. To train your neural network, we will now use "fmincg", which
 %  is a function which works similarly to "fminunc". Recall that these
 %  advanced optimizers are able to train our cost functions efficiently as
@@ -210,8 +215,8 @@ pause;
 
 
 %% ================= Part 9: Visualize Weights =================
-%  You can now "visualize" what the neural network is learning by 
-%  displaying the hidden units to see what features they are capturing in 
+%  You can now "visualize" what the neural network is learning by
+%  displaying the hidden units to see what features they are capturing in
 %  the data.
 
 fprintf('\nVisualizing Neural Network... \n')
@@ -230,5 +235,3 @@ pause;
 pred = predict(Theta1, Theta2, X);
 
 fprintf('\nTraining Set Accuracy: %f\n', mean(double(pred == y)) * 100);
-
-

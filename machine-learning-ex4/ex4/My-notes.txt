@@ -3,7 +3,9 @@ PUTTING ALL TOGETHER TO CREATING A NEURAL NETWORK
 -----------------------------------------------------
 
 I. Neural Network Architecture
-.......................................
+--------------------------------------------------------------------------------------------
+Objective - To identify the number of layers, and number of nodes in each layer.
+................................................................................
 1. Pick a network architecture. The number of nodes in the output layer is alway
 same as number of labels to which you want to classify. Number of nodes of the input layer
 is equal to number of features.
@@ -12,111 +14,186 @@ only one hidden layer.
 3. Number of units (nodes) in each hidden layer is same! More the number of hidden units, better it is.
 
 
-II. Training a neural Network
-....................................
-1. Randomly initialize the weights using epsilon based on the number of input and output units
-2. Implement the forward propagation
-3. Implement the cost function
-4. Implement the backward propagation to compute the partial derivatives.
-5. Use gradient checking to ensure that the gradient descent algo is working. THen disable gradient check
-6. Use gradient descent to optimize the values of theta.
+II. Training a neural Network [Backward Propagation]
+-------------------------------------------------------------------------------------------
+Objective - The optimization functions to compute descent requires the cost function and the gradient matrix.
+Our objective here is to implement both of these -
+    A. Cost function for the entire neural network for all nodes and all layers.
+    B. Gradient matrix for each layer.
+.........................................................................................
+
+##########################################
+1.  THETA INITIALIZATION
+##########################################
+    Randomly initialize the weights using epsilon based on the number of input and output nodes of
+    each layer. Such initialization is done for each layer, and we have L such initial_Theta matrices.
+    This is passed as Theta1 and Theta2 matrices to the method nnCostFunction to determine the final Theta1 and Theta2
+    using optimization of fminunc or fmincg.
+
+################################################################
+2. DETERMINE THE COST FUNCTION FOR ALL NODES IN ALL LAYERS.
+################################################################
+   Implement the cost function. Note that this cost function will be used by fminunc() or fmincg() to implement gradient descent.
+   Before implementing the cost function, it is important to reshape the y matrix to match the neural net's output nodes. This is done as follows
+
+   ----------------------------------------------------------------------------------------
+   COST FUNCTION FOR LOGISTIC REGRESSION AND NEURAL NETWORK EMPLOYING LOGISTIC REGRESSION
+   ----------------------------------------------------------------------------------------
+
+   1. IN logistic regressions, there is always a transformation of the y to to a new "transformed Y",
+   that is populated to encode the different labels.
+   Y TRANSFORMATION - In neural networks, the one thing that is most important is "Y TRANSFORMATION".
+   There is a key difference between normal logistic regression and neural networks employing logistic
+   regression. In the normal case, we have just one h(theta). So, we need to just find the difference of h(theta)
+   with that of y, to determine the cost function. It is true that you need to do some transformation of the y
+   to show up the labels. But you do not need to get into the comlexity of different h(theta). You might
+   have different labels. But then it is still simple because h(theta) is same. So, after encoding the y,
+   you can just find the cost function direction as follows -
+
+   While computing the optimal theta using gradient descent you use the following -
+
+   for c = 1:num_labels
+    [theta, J, exit_flag] = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);
+    all_theta(c,:) = theta;
+   endfor
+
+   Note - the third parameter is a transformed y vector, based on the label. But the point is that y still remains
+   a vector. Cost function and gradient looks like the following -
+
+   J = 1/m * (-y' * log(sigmoid(X * theta)) - (1-y)' * log(1-(sigmoid(X*theta)))) + (lambda/(2*m) * sum(theta(2:n).^2));
+   grad = 1/m * X' * (sigmoid(X * theta) - y);
+   grad (2:n) = grad (2:n) + lambda/m * theta (2:n) ;
+
+   ....................
+   Neural Network
+   ....................
+   In case of neural network, there are multiple h(theta). TO be able to find the cost of a given h(theta), you
+   need its corresponding y. So, along with the transformation of y to encode the labels, you also need a means to
+   classify all the y's belonging to one particular h(theta) so that when you do  a matrix multiplication of the
+   h(theta) of the newly transformed y, only those members of y are picked up which belong to that particular
+   label represented by the corresponding h(theta). Both of these can be easily done using identity matrix transformation.
+   Identity matrix works as an encoder, where each row acts as an encoded mapping of each label. You create
+   an identity matrix of the size of that of labels. You scoop out appropriate row from this identity matrix,
+   and keep stacking it in the transformed Y. The number of row in this transformed Y, is same as the number
+   of training set. Each row has a pattern of all zeros and one 1 to encode a unique label.
+   It looks something like this -
+
+   m = data size.
+   I = eye(num_labels)
+   for i = 1 : m
+       Y(i,:) = I(y(i), :)
+   endfor
+
+   The special thing about this transformed Y, is that if you do a matrix multiplication of h(theta) with Y,
+   while determining the cost function, all the non relevant values for h(theta) for a particular row of Y,
+   will return zero, and hence will be ignored.
+
+   Here is the algorithm for the cost function determination -
+   *************************************************************************
+   %Identify matrix encoder
+   I = eye(num_labels); %10 * 10 matrix of Identity encoder. it is always num_labels * num_labels
+   %Transforming the y into encoded Y with the help of the identity encoder.
+   Y = zeros(m, num_labels); % 5000 * 10 matrix
+   for i=1:m
+     Y(i, :)= I(y(i), :);
+   end
 
 
+   A1 = [ones(m, 1) X]; % 5000 * 401 matrix
+   %Theta1 = 25*401 matrix. So Theta1' is 401*25 matrix. So Z2 = 5000*25 matrix
+   Z2 = A1 * Theta1'; % 5000 * 25 matrix
+   A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)]; % 5000*26 matrix
+   % Theta2 is 10*26 matrix. So Theta2' is 26*10 matrix
+   Z3 = A2*Theta2'; % 5000*10 matrix
+   H = A3 = sigmoid(Z3); % 5000*10 matrix
 
 
+   penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
 
-----------------------------------------------------------------------------------------
-COST FUNCTION FOR LOGISTIC REGRESSION AND NEURAL NETWORK EMPLOYING LOGISTIC REGRESSION
-----------------------------------------------------------------------------------------
-
-1. IN logistic regressions, there is always a transformation of the y to to a new "transformed Y",
-that is populated to encode the different labels.
-Y TRANSFORMATION - In neural networks, the one thing that is most important is "Y TRANSFORMATION".
-There is a key difference between normal logistic regression and neural networks employing logistic
-regression. In the normal case, we have just one h(theta). So, we need to just find the difference of h(theta)
-with that of y, to determine the cost function. It is true that you need to do some transformation of the y
-to show up the labels. But you do not need to get into the comlexity of different h(theta). You might
-have different labels. But then it is still simple because h(theta) is same. So, after encoding the y,
-you can just find the cost function direction as follows -
-
-While computing the optimal theta using gradient descent you use the following -
-
-for c = 1:num_labels
- [theta, J, exit_flag] = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);
- all_theta(c,:) = theta;
-endfor
-
-Note - the third parameter is a transformed y vector, based on the label. But the point is that y still remains
-a vector. Cost function and gradient looks like the following -
-
-J = 1/m * (-y' * log(sigmoid(X * theta)) - (1-y)' * log(1-(sigmoid(X*theta)))) + (lambda/(2*m) * sum(theta(2:n).^2));
-grad = 1/m * X' * (sigmoid(X * theta) - y);
-grad (2:n) = grad (2:n) + lambda/m * theta (2:n) ;
-
-....................
-Neural Network
-....................
-In case of neural network, there are multiple h(theta). TO be able to find the cost of a given h(theta), you
-need its corresponding y. So, along with the transformation of y to encode the labels, you also need a means to
-classify all the y's belonging to one particular h(theta) so that when you do  a matrix multiplication of the
-h(theta) of the newly transformed y, only those members of y are picked up which belong to that particular
-label represented by the corresponding h(theta). Both of these can be easily done using identity matrix transformation.
-Identity matrix works as an encoder, where each row acts as an encoded mapping of each label. You create
-an identity matrix of the size of that of labels. You scoop out appropriate row from this identity matrix,
-and keep stacking it in the transformed Y. The number of row in this transformed Y, is same as the number
-of training set. Each row has a pattern of all zeros and one 1 to encode a unique label.
-It looks something like this -
-
-m = data size.
-I = eye(num_labels)
-for i = 1 : m
-    Y(i,:) = I(y(i), :)
-endfor
-
-The special thing about this transformed Y, is that if you do a matrix multiplication of h(theta) with Y,
-while determining the cost function, all the non relevant values for h(theta) for a particular row of Y,
-will return zero, and hence will be ignored.
-
-Here is the algorithm for the cost function determination -
-*************************************************************************
-%Identify matrix encoder
-I = eye(num_labels); %10 * 10 matrix of Identity encoder. it is always num_labels * num_labels
-%Transforming the y into encoded Y with the help of the identity encoder.
-Y = zeros(m, num_labels); % 5000 * 10 matrix
-for i=1:m
-  Y(i, :)= I(y(i), :);
-end
+   J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
+   J = J + penalty;
 
 
-A1 = [ones(m, 1) X]; % 5000 * 401 matrix
-%Theta1 = 25*401 matrix. So Theta1' is 401*25 matrix. So Z2 = 5000*25 matrix
-Z2 = A1 * Theta1'; % 5000 * 25 matrix
-A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)]; % 5000*26 matrix
-% Theta2 is 10*26 matrix. So Theta2' is 26*10 matrix
-Z3 = A2*Theta2'; % 5000*10 matrix
-H = A3 = sigmoid(Z3); % 5000*10 matrix
+#######################################################################################################
+3 BACKWARD PROPAGATION - FINDING THE GRADIENT MATRIX CORRESPONDING TO ALL THE TRAINING EXAMPLES.
+#######################################################################################################
+For a given training set (xt, yt), where t ranges from 1 to m, do the following -
+    {
+        i.  Implement the forward propagation to compute all the activations for each node in all layers.
+            In our example we set a1 as [ones(size(X,1),1) X]. Then we compute z2, a2, z3, a3. This is
+            implemented in nnCostFunction.m as follows -
+
+            %FORWARD PROPAGATION.
+            A1 = [ones(m, 1) X]; % 5000 * 401 matrix
+            %Theta1 = 25*401 matrix. So Theta1' is 401*25 matrix. So Z2 = 5000*25 matrix
+            Z2 = A1 * Theta1'; % 5000 * 25 matrix
+            A2 = [ones(size(Z2, 1), 1) sigmoid(Z2)]; % 5000*26 matrix
+            % Theta2 is 10*26 matrix. So Theta2' is 26*10 matrix
+            Z3 = A2*Theta2'; % 5000*10 matrix
+            H = A3 = sigmoid(Z3); % 5000*10 matrix
+
+        ii. Find the cost function J for all the nodes in all the layers. We first find the cost of each row, and sum them.
+            That gives us a vector of one column and 5000 rows. Then we do a sum over that, which sums the total cost of the
+            entire network. We are not ready with the cost. This is implemented in nnCostFunction.m as follows -
+
+            J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
+            J = J + penalty;
 
 
-penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
+        iii.For each node 'j' in layer 'l' we compute delta j,l (j is the subscript and l superscript)
+            that measures how much the node is responsible for any error in the output. For the output nodes
+            we can directly find the difference between the network's activation and the true target value,
+            and use that to define delta j, L. For hidden, we compute d j,l, based on the weighted average
+            of the error terms of the node in l+1 layer. This is implemented in nnCostFunction as follows -
+                > For the final layer 3 in this example we determine dj3 as follows -
 
-J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
-J = J + penalty;
-***************************************************************************
+                    Sigma3 = A3 - Y;                        % 5000*10 matrix
 
-----------------------------------
-Backward propagation
-----------------------------------
-Here is the code for the backward propagation -
-************************************************************************************
-% BACKWARD PROPAGATION
-Sigma3 = A3 - Y; % 5000*10 matrix
-Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
+                > For the internal layer 2 in this example we determine dj2 as follows -
+                    delta j, 2 or delta matrix for layer 2 is = weighted average of the error for next layer, ie. layer 3. as follows -
+                    a) error for layer 3 = Sigma3.          % 5000 * 10 matrix
+                    b) error of layer 2 = Weighted average of the error of layer 3. Now the issue is what is the weight that needs to be
+                       associated for each weighted average. We are trying to find dE/dw, where E is the error and w are the weights.
+                       This differentiation provides that weighted average factor that needs to be multiplied with the output of each node,
+                       and it can be easily derived (Ryan Harris) as -
 
+                       dE/dW for a layer l = (delta for layer l+1) * (Output of layer l) ................. (1)
 
-Delta_1 = Sigma2'*A1;
-Delta_2 = Sigma3'*A2;
+                       In our example, delta for layer 2 =
+                        Sigma2 = Sigma3 * Theta2 .* g'(z2)  % Theta2 is 10*26 matrix. So weighted average is 5000*26 matrix.
 
+                        This is implemented as -
+                        Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
 
-Theta1_grad = Delta_1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
-Theta2_grad = Delta_2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
-************************************************************************************
+                        To understand take 1st training set. Layer 3 error is each column of 1st row of Sigma3. There are 10 columns.
+                        Each value is the error for each label or node of the output layer. That error for each node has to translate
+                        to layer 2, based on how much layer 2 has been responsible for it. This is found by differentiating the layer
+                        error with respect to the weights. And through this above formula is easily derived.
+
+        iv. Now, once the weighted average factor for each node is determined (delta ij), that needs to be multiplied by  output
+            of each node to come up with the final error for that node or dE/dW as per equation (1).
+
+            dE/dW for a layer l = (delta for layer l+1) * (Output of layer l)
+
+            That is done as follows in the code -
+
+            Delta_1 = Sigma2'*A1;
+            Delta_2 = Sigma3'*A2;
+
+            This way deltas for each layers are accumulated based on their weights with which each node in each layer is connected to
+            the other nodes of the other layers.
+
+        v. The Deltas for each layer are now, divided equally among all the training sets, to find the actual error corresponding to each
+           target value as per the training set. This is implemented as -
+
+           Theta1_grad = Delta_1./m;
+           Theta2_grad = Delta_2./m;
+    }.
+
+#######################################################################################################################
+4. CHECK WHETHER THE GRADIENTS ARRIVED AT BY THE ABOVE STEP IS CORRECT, USING GRADIENT CHECKING VIA NUMBERICAL METHOD.
+#######################################################################################################################
+
+##############################################################################################################
+5. PASS THE ROLLED OUT VECTOR OF THE THETAS INTO fminunc() or fmincg() to actually run the gradient descent.
+###############################################################################################################
