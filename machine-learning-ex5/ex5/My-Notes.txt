@@ -1,4 +1,41 @@
-Suppose you are getting huge cost function for your learning algorithm, and the
-gradient descent is not able to identify theta with reduced cost function. Following can be done -
-1. Get more training examples.
-2. Make smaller set of features. Select a small subset of them 
+Sometimes cost function even reduced via gradient descent, and causing a very high accuracy with
+training data, might fare bad with the test data. This is a fallout of overfitting. This needs to be
+resolved. Following are the ways in which such situations are handled. But one needs to run diagnostics and
+evaluation of their model to identify which way to go. The possibilities are -
+1. Increase the data set.
+2. Decrease the number of features. Consider only the ones that are important, i.e has low p value.
+3. Try getting other features instead of the current ones, which might have low p value.
+4. Adjust lamda to manage the over fitting
+5. Try out polynomials. This might however cause over fitting too.
+
+------------------------------------------------------------------------------------------------------------------
+                                Evaluating the model
+------------------------------------------------------------------------------------------------------------------
+
+A - Test and Train sub sets
+............................................
+1. Randomly divide the training set to 70% training and 30% test data.
+2. Learn the thetas from the 70% training set, by minimizing the cost function J(theta) on only the training data, using gradient descent.
+3. Find the test error. J(theta) on only the test data.
+4. For the classification problems, you can find the J(theta) for the test set as above using the J(theta) of logistic function.
+   Or u can use the 0/1 "misclassification error". This is basically the average of sum of all errors for the opposite of sigmoid on every test set
+
+B - Selecting the degree of polynomial
+.............................................
+Find the Jtest(theta) for d=1, 2, 3, 4...and then find the Jtest() which is the lowest. But again the same issue lies. We based the
+test on the test set, and for this test set, d might be optimum. What is the guarantee that it will be optimum for other test sets?
+This is solved by randomly dividing the trainings set into three subset -
+    i. Training set - 60% (mtrain)
+    ii. Cross Validation set - 20% (mcv)
+    iii. Test set - 20% (mtest)
+
+Then follow the following -
+    1. Use training set to identify theta using gradient descent.
+    2. Use cross validation set to identify the correct order of the equation of the hypothesis.
+    3. Use the test set to identify the error of the hypothesis.
+
+
+C - Underfitting (high variation) and Overfitting (high bias) problem
+.......................................................................
+There are two reasons why you are getting high error - either your model has a high variation or high bias. The idea is to find
+which one is the case, and take corrective action accordingly.
