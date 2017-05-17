@@ -1,1 +1,4 @@
-
+Suppose you are getting huge cost function for your learning algorithm, and the
+gradient descent is not able to identify theta with reduced cost function. Following can be done -
+1. Get more training examples.
+2. Make smaller set of features. Select a small subset of them 
