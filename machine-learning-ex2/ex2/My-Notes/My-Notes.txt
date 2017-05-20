@@ -3,4 +3,32 @@ Cost function of logistic regression
 ----------------------------------------------------------------
 
 J(theta) = - log(h(theta)) , for y = 1 (exponentially decreasing)
-J(theta) = - log(1-h(theta)), for y = 0 (exponentially increasing). 
+J(theta) = - log(1-h(theta)), for y = 0 (exponentially increasing).
+NOTE -
+When we plot J(theta) vs h(theta), the value of J will be in the range [0:1].
+Range of log is (-infinity, +infinity) but in this case the range of the cost function
+will be 0 to 7. This is because h(theta) is basically g(z), which is sigmoid(z),
+whose value is in turn in the range [0:1]. So for, that domain, the range is also limited.
+But the point to be notes is that in the domain [0:1] log(x) is negative. It ranges from around
+-4 to 0. log(1) is zero.
+A negative cost function does not make sense. So, we use a negative term and make the cost function as
+J(theta) = 1/m sigma(-log(h(x))) for y = 1
+J(theta) = 1/m sigma(-log(1-h(x))) for y = 0
+Putting them together the cost function becomes -
+J = 1/m(sigma(-y*log(h) - (1-y) * log(1-h)))
+So till now, we have agreed that it should be -log(x). But now the question is why log?
+And how this function would actually find the error in prediction?
+
+To understand this we plot h(theta) against J(theta), and see what happens as h(theta) increases
+and decreases. This is implemented in Logistic_regression.m
+If you see the graph it is of the shape of a glass. If y=1, as the h(theta) which is the actually
+the probability that the predicted value is 1, increases, the cost function decreases proportionately.
+Also as the h(theta) increases, and y = 0, the cost function increases. This gives an intuition that the
+cost function is good enough.
+
+But, this increase and decrease of cost function automatically with the switching of y's, with a
+linear increase in h(theta) (probability of predicted value = 1) needs to be proportional to the
+increase or decrease of h(theta). If you see the graph this is also pretty intuitive. The wine glass
+graph, for most of the regions is a almost a proportional line passing through origin. That is the test for
+proportionality. This is almost proportional and it is not parabolic.
+That is the beauty of log methods. 
