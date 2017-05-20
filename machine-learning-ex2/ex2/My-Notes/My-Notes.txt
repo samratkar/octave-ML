@@ -1,0 +1,6 @@
+----------------------------------------------------------------
+Cost function of logistic regression
+----------------------------------------------------------------
+
+J(theta) = - log(h(theta)) , for y = 1 (exponentially decreasing)
+J(theta) = - log(1-h(theta)), for y = 0 (exponentially increasing). 
