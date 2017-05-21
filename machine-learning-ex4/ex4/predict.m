@@ -7,11 +7,15 @@ function p = predict(Theta1, Theta2, X)
 m = size(X, 1);
 num_labels = size(Theta2, 1);
 
-% You need to return the following variables correctly 
+% You need to return the following variables correctly
 p = zeros(size(X, 1), 1);
 
 h1 = sigmoid([ones(m, 1) X] * Theta1');
 h2 = sigmoid([ones(m, 1) h1] * Theta2');
+
+% Translating output of the neural network to the desired output based on labels,
+% by considering the cumulative maximum propability for each label.
+
 [dummy, p] = max(h2, [], 2);
 
 % =========================================================================
