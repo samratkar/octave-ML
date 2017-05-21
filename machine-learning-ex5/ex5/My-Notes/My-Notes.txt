@@ -30,12 +30,42 @@ This is solved by randomly dividing the trainings set into three subset -
     iii. Test set - 20% (mtest)
 
 Then follow the following -
-    1. Use training set to identify theta using gradient descent.
+    1. Use training set to identify theta using gradient descent. [**use the traditional cost functions**]
     2. Use cross validation set to identify the correct order of the equation of the hypothesis.
     3. Use the test set to identify the error of the hypothesis.
+        i. ****SIMPLE REGRESSION ERROR FUNCTION - SAME AS TRADITIONAL COST FUNCTION****
+           For regression issues the error can be measured directly by the cost function.
+           This is because, the error is absolutely proportional to the cost function.
+        ii.****LOGISTIC REGRESSION OR NEURAL NETWORK ERROR FUNCTION*****
+           For the logistic regression, the logarithmic cost function that we have gives a measure of whether
+           we are nearing the actual target or not. But it does not give precise errors. This is because
+           the target is a binary value. Same should be the h(theta). Rather h(theta) is the sigmoid method which
+           gives probabilities. Now, if h(theta)>0.5, say some probability value as 0.8. For that, hypothesis for a given
+           training set say, if y=1, we have the cost function as follows -
+            J(theta)= 1/m(-log h) = 1/m(-log 0.8) = 1/m (0.0969)
+            Please note that there is a finite cost still in this case, although it is a very small number. Certainly
+            in this case, error should have been zero, as any hypothesis h(x) > 0.5 is a region which should be
+            predicted as y=1. And similarly for any hypothesis with h(theta) < 0.5, the region should be predicted as y=0.
+            Any discrepancy in this predicted y and the actual y, should give the error.
+
+            Hence there is a need of a separate function for logistic regression to find the misclassification fractions of all
+            the test set. This is given by the function -
+            err(hΘ(x),y) =1 if hΘ(x)≥0.5 and y=0 or hΘ(x)<0.5 and y=1
+            err(hΘ(x),y) = 0 otherwise
+            This gives us a binary 0 or 1 error result based on a misclassification. The average test error for the test set is:
+
+            Test Error=1/mtest∑err(hΘ(x(i)test),y(i)test)
 
 
-C - Underfitting (high variation) and Overfitting (high bias) problem
+C - Under-fitting (high bias) and Over-fitting (high variability) problem
 .......................................................................
 There are two reasons why you are getting high error - either your model has a high variation or high bias. The idea is to find
 which one is the case, and take corrective action accordingly.
+Note that when you plot the error method with respect to degree of polynomials the error values keep
+decreasing with the increase in the degree of polynomials, if you consider the training set. That has to
+happen as you would have already run gradient descent.
+But then, when you plot the error function with the degree of polynomial, considering the cross validation set,
+it is like a bowl. The error will be high when the order is low. That is the area of bias. The error will keep
+reducing with increase in polynomial, which is expected. But then at a point due to overfitting it might
+not be able to predict accurately few of the cross validation sets. That area of high error is known as
+area of high variability.
