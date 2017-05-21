@@ -157,10 +157,8 @@ For a given training set (xt, yt), where t ranges from 1 to m, do the following 
                        This differentiation provides that weighted average factor that needs to be multiplied with the output of each node,
                        and it can be easily derived (Ryan Harris) as -
 
-                       dE/dW for a layer l = (delta for layer l+1) * (Output of layer l) ................. (1)
-
                        In our example, delta for layer 2 =
-                        Sigma2 = Sigma3 * Theta2 .* g'(z2)  % Theta2 is 10*26 matrix. So weighted average is 5000*26 matrix.
+                        Sigma2 = g'(z2).* (Sigma3 * Theta2)   % Theta2 is 10*26 matrix. So weighted average is 5000*26 matrix.
 
                         This is implemented as -
                         Sigma2 = (Sigma3*Theta2 .* sigmoidGradient([ones(size(Z2, 1), 1) Z2]))(:, 2:end);
@@ -185,6 +183,7 @@ For a given training set (xt, yt), where t ranges from 1 to m, do the following 
 
         v. The Deltas for each layer are now, divided equally among all the training sets, to find the actual error corresponding to each
            target value as per the training set. This is implemented as -
+           (THis is as per the equation of cost function 1/m(-ylogh-(1-y)log(1-h)). We need to divide by m to average out costs for all cases)
 
            Theta1_grad = Delta_1./m;
            Theta2_grad = Delta_2./m;
