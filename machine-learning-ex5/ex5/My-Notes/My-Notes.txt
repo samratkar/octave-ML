@@ -31,7 +31,7 @@ This is solved by randomly dividing the trainings set into three subset -
 
 Then follow the following -
     1. Use training set to identify theta using gradient descent. [**use the traditional cost functions**]
-    2. Use cross validation set to identify the correct order of the equation of the hypothesis.
+    2. Use cross validation set to identify the correct order/lambda of the equation of the hypothesis.
     3. Use the test set to identify the error of the hypothesis.
         i. ****SIMPLE REGRESSION ERROR FUNCTION - SAME AS TRADITIONAL COST FUNCTION****
            For regression issues the error can be measured directly by the cost function.
