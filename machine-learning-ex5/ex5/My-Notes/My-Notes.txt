@@ -69,3 +69,9 @@ it is like a bowl. The error will be high when the order is low. That is the are
 reducing with increase in polynomial, which is expected. But then at a point due to overfitting it might
 not be able to predict accurately few of the cross validation sets. That area of high error is known as
 area of high variability.
+
+D - LEARNING CURVE
+------------------------------------------
+The performance of the J(theta)cv and J(theta)train wrt to the increase of training set is known as learning curve.
+1. As training set is low, Jtrain is low. Because it is easier to fit less points. Jcv will be high, because it is
+unaware of the training set. As you increase number of training set, the Jcv decreases. But then the Jtrain keeps increasing.
