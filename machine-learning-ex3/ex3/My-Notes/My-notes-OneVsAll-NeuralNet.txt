@@ -1,0 +1,28 @@
+File - ex3_nn.m
+The same implementation that we had done using OneVsAll method, can be done using a neural net.
+In this example we construct a neural net with the following architecture -
+-------------------------------------------------------------------------------
+Layer 1                 Layer 2                 Layer 3
+(input X's)             (25 size)               (output layer)
+-------------------------------------------------------------------------------
+a0                      a0                       a1
+a1                      a1                       a2
+a2                      a2                       ..
+a3                      a3                       ..
+..                      ..                       a10
+..                      a25
+..
+a400
+-------------------------------------------------------------------------------
+
+Each element of layer 2 is g(h(x)) for all X's and Theta matrix between layer 1 and layer 2.
+Layer 2 is a linear equation.
+
+Layer 3 is g(h(g(h(x))). So, it is a second order equation. And it has its own set of thetas,
+which is between layer 2 and layer 3.
+
+Theta1 being the matrix of parameters between layer1 and layer2.
+Theta2 being the matrix of parameters between layer2 and layer3.
+
+These Theta matrices need to be trained to be determined. Once determined it follows the same
+logic of One-Vs-All
