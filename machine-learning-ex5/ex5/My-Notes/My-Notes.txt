@@ -2,11 +2,21 @@ Sometimes cost function even reduced via gradient descent, and causing a very hi
 training data, might fare bad with the test data. This is a fallout of overfitting. This needs to be
 resolved. Following are the ways in which such situations are handled. But one needs to run diagnostics and
 evaluation of their model to identify which way to go. The possibilities are -
-1. Increase the data set.
-2. Decrease the number of features. Consider only the ones that are important, i.e has low p value.
-3. Try getting other features instead of the current ones, which might have low p value.
+
+1. Increase the data set. [FIXES HIGH VARIANCE, BUT NOT HIGH BIAS]
+2. Decrease the number of features. Consider only the ones that are important, i.e has low p value. [FIXES HIGH VARIANCE, BUT NOT HIGH BIAS]
+3. Try getting other ADDITIONAL features. [FIXES HIGH BIAS, BUT NOT HIGH VARIANCE]
 4. Adjust lamda to manage the over fitting
-5. Try out polynomials. This might however cause over fitting too.
+5. Try out polynomials. This might however cause over fitting too. [FIXES HIGH BIAS, BUT NOT HIGH VARIANCE]
+6. Try decreasing lambda [FIXES HIGH BIAS]
+7. Try increasing lambda [FIXES HIGH VARIANCE]
+
+NEURAL NETWORKS
+It is always better to create a huge neural network with some lambda value, rather than small neural network.
+You will always have to arrive at the point to decide whether there is a high variance or high bias for your neural networks.
+This can be ascertained by the nature of the Jcv and Jlearning. Jcv and Jlearning being very high, but close to each other
+signify high bias. A low Jlearning and a huge difference between Jcv and Jlearning where Jcv is high, implies a high variance.
+If the variance is already very high, it will not help in increasing the hidden layers or units. You might have to increase lambda.
 
 ------------------------------------------------------------------------------------------------------------------
                                 Evaluating the model
@@ -74,4 +84,7 @@ D - LEARNING CURVE
 ------------------------------------------
 The performance of the J(theta)cv and J(theta)train wrt to the increase of training set is known as learning curve.
 1. As training set is low, Jtrain is low. Because it is easier to fit less points. Jcv will be high, because it is
-unaware of the training set. As you increase number of training set, the Jcv decreases. But then the Jtrain keeps increasing.
+unaware of the training set. As you increase number of training set, the Jcv decreases. But then the Jtrain keeps increasing,
+till it stabilizes.
+When there is a high bias, the Jtrain would remain constance at a high value. So, by increasing the training set
+will have no value in decreasing the cost function.
