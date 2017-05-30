@@ -21,15 +21,8 @@ grad = zeros(size(theta));
 
 
 n = size(X,2);
-X = [ones(size(X,1)), X];
-J = (1/(2*m))* ((X*theta' - y) * (X*theta' - y)' + lambda * theta(2:n).^2);
-grad = ( 1/m ) * X' * (X*theta' -y);
-
-
-
-
-
-
+J = (1/(2*m))* ((X*theta - y)' * (X*theta - y) + lambda * sum(theta(2:n).^2));
+grad = ( 1/m ) * X' * (X*theta -y);
 
 
 % =========================================================================
