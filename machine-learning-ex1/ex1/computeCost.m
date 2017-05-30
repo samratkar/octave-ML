@@ -12,6 +12,7 @@ J = 0;
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
+% Note that cost funtion will work correctly only when the transpose term is the first term. That is the key. 
 J = 1/(2*m) * (X * theta - y)' * (X * theta - y); 
 % =========================================================================
 
