@@ -113,12 +113,17 @@ lambda = 0;
     learningCurve([ones(m, 1) X], y, ...
                   [ones(size(Xval, 1), 1) Xval], yval, ...
                   lambda);
-
+% See that this plot is different. it is of the form plot(x1,y1, x2,y2, x3,y3)
+% Also see that the Jcv is near to the Jtrain, with just 12 training set. That means
+% this is not a case of variance or over fit. But, even after 12 sets, cost function is
+% seen not reducing but is constant at 20. This is a case of high bias. Jcv is nearing 50.
+% This is certianly thus a case of high bias. The elements plot also shows the same. 
 plot(1:m, error_train, 1:m, error_val);
 title('Learning curve for linear regression')
 legend('Train', 'Cross Validation')
 xlabel('Number of training examples')
 ylabel('Error')
+% setting the lower limit and upper limit of x axis and y axis.
 axis([0 13 0 150])
 
 fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
