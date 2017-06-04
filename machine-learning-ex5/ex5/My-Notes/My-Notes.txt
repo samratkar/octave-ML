@@ -88,3 +88,8 @@ unaware of the training set. As you increase number of training set, the Jcv dec
 till it stabilizes.
 When there is a high bias, the Jtrain would remain constance at a high value. So, by increasing the training set
 will have no value in decreasing the cost function.
+
+NOTE: The absolute values of the Jcv, Jtrain, Jtest cannot be predicted, and their relative values do not say much. It can be
+in any way. Only the following can be adhered to -
+1. If the Jtrain progresses close to Jtest and Jcv, know that there is a high bias.
+2. If the Jtrain progresses away from Jtest and Jcv, know that there is high variance. 

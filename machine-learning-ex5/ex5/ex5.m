@@ -117,7 +117,7 @@ lambda = 0;
 % Also see that the Jcv is near to the Jtrain, with just 12 training set. That means
 % this is not a case of variance or over fit. But, even after 12 sets, cost function is
 % seen not reducing but is constant at 20. This is a case of high bias. Jcv is nearing 50.
-% This is certianly thus a case of high bias. The elements plot also shows the same. 
+% This is certianly thus a case of high bias. The elements plot also shows the same.
 plot(1:m, error_train, 1:m, error_val);
 title('Learning curve for linear regression')
 legend('Train', 'Cross Validation')
@@ -185,6 +185,7 @@ ylabel('Water flowing out of the dam (y)');
 title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 
 figure(2);
+% determining and plotting the learning curve. 
 [error_train, error_val] = ...
     learningCurve(X_poly, y, X_poly_val, yval, lambda);
 plot(1:m, error_train, 1:m, error_val);

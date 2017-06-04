@@ -1,4 +1,4 @@
-function compute_plot_costs(train_data, cv_data, test_data, theta_trained)
+function compute_plot_costs(train_data, cv_data, test_data)
 
 % Plot Data before adding bias.
  X_cv = cv_data(:,1);
@@ -15,20 +15,21 @@ function compute_plot_costs(train_data, cv_data, test_data, theta_trained)
  X_train = [ones(mtrain, 1), X_train]; % Add a column of ones to x
  X_test = [ones(mtest, 1), X_test]; % Add a column of ones to x
  %% ===================Cost with increasing training set - Jcv and Jtrain============
- Jcv = zeros(mcv, 1);
- Jtrain = zeros(mcv, 1);
- Jtest = zeros(mtest,1);
- for i = 1 : mcv
-    Jcv(i) = computeCost(X_cv(1:i,:), y_cv(1:i,:), theta_trained);
+ % Jcv = zeros(mcv, 1);
+ % Jtrain = zeros(mcv, 1);
+ % Jtest = zeros(mtest,1);
+ for i = 1 : mtrain
+    theta_trained = training_algo(train_data(1:i,:));
     Jtrain(i) = computeCost(X_train(1:i,:), y_train(1:i,:), theta_trained);
-    Jtest(i) = computeCost(X_test(1:i,:), y_test(1:i,:), theta_trained);
+    Jcv(i) = computeCost(X_cv, y_cv, theta_trained);
+    Jtest(i) = computeCost(X_test, y_test, theta_trained);
  endfor
 
- hold on;
-  plot(Jtrain,'b');
-  plot (Jcv,'r');
-  plot (Jtest,'g');
-  legend ("Jtrain","Jcv", "Jtest");
+  figure ;
+  plot(1:mtrain,Jtrain,'b',1:mtrain,Jtest, 'g', 1:mtrain,Jcv,'r');
+  % plot (Jcv,'r');
+  % plot (Jtest,'g');
+  legend ("Jtrain","Jtest", "Jcv");
   xlabel('No. of training set'); ylabel('J(theta)');
 
  % csvwrite("J_cv.csv", Jcv);
