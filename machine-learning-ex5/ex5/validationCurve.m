@@ -33,10 +33,12 @@ for i = 1:length(lambda_vec)
    % regression with regularization parameter lambda
    % You should store the result in error_train(i)
    % and error_val(i)
-   trained_theta = trainLinearReg(X,y,i);
-   [error_train(i), grad]  = linearRegCostFunction(X,y,trained_theta,lambda);
+   trained_theta = trainLinearReg(X,y,lambda);
+   % While finding the error function or cost function for training and cross validation or test set,
+   % lambda is NOT considered.
+   [error_train(i), grad]  = linearRegCostFunction(X,y,trained_theta,0);
 
-   [error_val(i), grad] = linearRegCostFunction(Xval, yval, trained_theta, lambda);
+   [error_val(i), grad] = linearRegCostFunction(Xval, yval, trained_theta, 0);
 
 end
 

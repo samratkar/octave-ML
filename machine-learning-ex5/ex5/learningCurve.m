@@ -49,9 +49,11 @@ for i = 1:m
     % error_train(i) and error_val(i)
 
     trained_theta = trainLinearReg(X(1:i,:),y(1:i,:),lambda);
-    [error_train(i), grad]  = linearRegCostFunction(X(1:i,:),y(1:i,:),trained_theta,lambda);
+    % While finding the error function or cost function for training and cross validation or test set,
+    % lambda is NOT considered.
+    [error_train(i), grad]  = linearRegCostFunction(X(1:i,:),y(1:i,:),trained_theta,0);
 
-    [error_val(i), grad] = linearRegCostFunction(Xval, yval, trained_theta, lambda);
+    [error_val(i), grad] = linearRegCostFunction(Xval, yval, trained_theta, 0);
 end
 
 
