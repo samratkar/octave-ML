@@ -92,4 +92,28 @@ will have no value in decreasing the cost function.
 NOTE: The absolute values of the Jcv, Jtrain, Jtest cannot be predicted, and their relative values do not say much. It can be
 in any way. Only the following can be adhered to -
 1. If the Jtrain progresses close to Jtest and Jcv, know that there is a high bias.
-2. If the Jtrain progresses away from Jtest and Jcv, know that there is high variance. 
+2. If the Jtrain progresses away from Jtest and Jcv, know that there is high variance.
+
+E - EVALUATING A SPAM CLASSIFIER
+-------------------------------------------
+1. Make the features as the high repeated words across several spam emails.
+2. Create highly sophisticated feature engineering by taking the header information, or processing the email body, etc of the spam email.
+3. Correct the spelling of the spam emails. But this might not yield much result. Because if the mispellings are less
+   correcting them will not matter. And if misspellings are more that can ideally be a new feature.
+   But yes, if there are unique misspellings, it might make sense to correct the misspellings.
+
+F - ERROR ANALYSIS
+--------------------------------------------
+1. Build and easy machine learning system with simple feature matrix and see how it peforms.
+2. Plot the learning curves and identify whether your algorithm suffers from high bias or high variance. Based on that
+   take definitive steps as either increasing the number of training set, or number of features, or order of the features.
+3. Manually examine the examples in cross validation set, that your algorithm made errors on. See if you can make any
+   systematic trend in what type of examples it is making errors on.
+
+G - HANDLING SKEWED DATA
+--------------------------------------------
+Skewed data is an issue with the training/test/cv data points such that a very small percentage of the data is actually
+violating/agreeing to the hypothesis. In that case we actually do not need to predict anything, as probability of
+one label is very high. Such a case is known as skewed data.
+1. Precision = # true positives / (#true positives + #false positives )
+2. Recall - # true positive / (#true positives + #false negatives)
