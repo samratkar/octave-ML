@@ -122,6 +122,13 @@ one label is very high. Such a case is known as skewed data.
 We use terms as follows to depict the combination of how the predicted and actual data shows up -
 [Actual Result -> TRUE/FALSE] [Predicted result -> POSITIVE/NEGATIVE]
 
+Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES. The first (PRECISION) one is says how many TRUE POSITIVES were there in the entire predictions that were undertaken yielded POSITIVE. And the second (RECALL) one says how many TRUE POSITIVES were there in the entire TRUE cases.  
+
+PRECISION -> PREDICTION -> Universal set is All "POSITIVE" Predictions. 
+RECALL    -> REALITY    -> Universal set is All "TRUE" Cases.           
+NOTE - In both the above cases, we are trying to use PREDICTIONS to denote the metrics. So, the reality is represented as true positives + false negatives. And prediction is represented by true positives + false positives. 
+What you see in the cells below is nothing but the digrammatic representation of the PREDICTIONS. It is only that the predictions can be true positive, false positive, false negative and true negative. 
+
              ACTUAL CLASS
             1             0
 P     ---------------------------
@@ -132,9 +139,11 @@ I S 0 |  False      | True      | ==> All the cases of negative predictions.
 C S   |  Negative   | Negative  |
 T     ---------------------------
         True cases    False cases
+        
+        
 
 1. Precision = # "TRUE" "POSITIVES" / (# "TRUE" "POSITIVES" + # "FALSE" "POSITIVES" )
-[Of ALL the patients we have PREDICTED has cancer, what fraction that we "CORRECTLY" "PREDICT" as having cancer]
+[Of ALL the patients we have PREDICTED "POSITIVE" for cancer, what fraction that we "CORRECTLY" "PREDICT" (TRUE POSITIVE) as having cancer]
 [This gives the fraction of "True-Positives", for all the cases of "Positives". Precision is all about the positive predictions. It does not say anything about the negative predictions. So, it just gives you the power of the algorithm only for the cases which are predicted positively]
 [PRECISION is a measure of POSITIVE PREDICTIONS which are TRUE in the crowd of all the POSITIVE PREDICTIONS.]
 
