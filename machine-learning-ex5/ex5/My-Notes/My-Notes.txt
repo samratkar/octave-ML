@@ -113,16 +113,25 @@ F - ERROR ANALYSIS
 3. Manually examine the examples in cross validation set, that your algorithm made errors on. See if you can make any
    systematic trend in what type of examples it is making errors on.
 
-G - HANDLING SKEWED DATA [ONLY TWO LABELS - 0 AND 1]
--------------------------------------------------------
+G - METRICS FOR HANDLING SKEWED DATA FOR BINARY CLASSIFICATION [ONLY TWO LABELS - 0 AND 1]
+----------------------------------------------------------------------------------------------
+https://www.quora.com/What-is-the-best-way-to-understand-the-terms-precision-and-recall
+
 Skewed data is an issue with the training/test/cv data points such that a very small percentage of the data is actually
 violating/agreeing to the hypothesis. In that case we actually do not need to predict anything, as probability of
 one label is very high. Such a case is known as skewed data.
 
 We use terms as follows to depict the combination of how the predicted and actual data shows up -
-[Actual Result -> TRUE/FALSE] [Predicted result -> POSITIVE/NEGATIVE]
+<TRUE/FALSE> <POSITIVE/NEGATIVE> --> The first term says whether the prediction is correct or wrong based on actual data. The second term says what is the value of prediction - 1 or zero. So, the mterics is about knowing how the prediction is faring well wrt actual data.  
 
-Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES. The first (PRECISION) one is says how many TRUE POSITIVES were there in the entire predictions that were undertaken yielded POSITIVE. And the second (RECALL) one says how many TRUE POSITIVES were there in the entire TRUE cases.  
+Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES, w.r.t to total POSITIVE PREDICTIONS (Precision) or total POSITIVE ACTUAL OUTCOMES (Recall)
+
+PRECISION - What is the fraction of TRUE POSITIVE predictions wrt ALL the POSITIVE PREDICTIONS. 
+So it really gives the accuracy of the "POSITIVE" predictions of the model. Hence it is basically saying that of all the positive predictions, what fraction of them are correct predictions.
+
+RECALL - What is the fraction of TRUE POSITIVE predictions wrt ALL the POSITIVE ACTUALS. Hence it is basically saying that of all the positive actuals, what fraction of the them, were correctly predicted. 
+
+The first (PRECISION) one says how many TRUE POSITIVES were there in the entire predictions that were undertaken yielded POSITIVE. And the second (RECALL) one says how many TRUE POSITIVES were there in the entire TRUE cases.  
 
 PRECISION -> PREDICTION -> Universal set is All "POSITIVE" Predictions. 
 RECALL    -> REALITY    -> Universal set is All "TRUE" Cases.           
@@ -133,12 +142,13 @@ What you see in the cells below is nothing but the digrammatic representation of
             1             0
 P     ---------------------------
 R C   |   True      |  False    |
-E L 1 |   Positive  |  Positive | ==> All the cases of positive predictions.
+E L 1 |   Positive  |  Positive | ==> All the cases of predicted positives. [domain for Precision]
 D A   |-------------------------|
-I S 0 |  False      | True      | ==> All the cases of negative predictions.
+I S 0 |  False      | True      | 
 C S   |  Negative   | Negative  |
 T     ---------------------------
-        True cases    False cases
+           ||
+       All cases of actual positives. [domain of recall]
         
         
 
