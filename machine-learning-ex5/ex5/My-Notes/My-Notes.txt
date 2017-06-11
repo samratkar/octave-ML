@@ -117,26 +117,37 @@ G - METRICS FOR HANDLING SKEWED DATA FOR BINARY CLASSIFICATION [ONLY TWO LABELS 
 ----------------------------------------------------------------------------------------------
 https://www.quora.com/What-is-the-best-way-to-understand-the-terms-precision-and-recall
 
+https://medium.com/ml-ai-study-group/precision-and-recall-b47202b29bc7
+
 Skewed data is an issue with the training/test/cv data points such that a very small percentage of the data is actually
 violating/agreeing to the hypothesis. In that case we actually do not need to predict anything, as probability of
 one label is very high. Such a case is known as skewed data.
 
 We use terms as follows to depict the combination of how the predicted and actual data shows up -
-<TRUE/FALSE> <POSITIVE/NEGATIVE> --> The first term says whether the prediction is correct or wrong based on actual data. The second term says what is the value of prediction - 1 or zero. So, the mterics is about knowing how the prediction is faring well wrt actual data.  
+<TRUE/FALSE> <POSITIVE/NEGATIVE> --> The first term says whether the prediction is correct or wrong based on actual data.
+The second term says what is the value of prediction - 1 or zero - positive or negative.
+So, the metrics is about knowing how the prediction is faring well wrt actual data.
 
-Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES, w.r.t to total POSITIVE PREDICTIONS (Precision) or total POSITIVE ACTUAL OUTCOMES (Recall)
+Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES.
+One is in the context of total POSITIVE PREDICTIONS (Precision), measuring the efficiency of the positive predictions.
+The other is in the context of total POSITIVE ACTUAL OUTCOMES (Recall). It measures how much the model was able to recall what actually happened.
 
-PRECISION - What is the fraction of TRUE POSITIVE predictions wrt ALL the POSITIVE PREDICTIONS. 
-So it really gives the accuracy of the "POSITIVE" predictions of the model. Hence it is basically saying that of all the positive predictions, what fraction of them are correct predictions.
+PRECISION - What is the fraction of TRUE POSITIVE predictions wrt ALL the POSITIVE PREDICTIONS.
+So it really gives the accuracy of the "POSITIVE" predictions of the model. Hence it is basically saying that of all the positive predictions,
+what fraction of them are correct predictions.
 
-RECALL - What is the fraction of TRUE POSITIVE predictions wrt ALL the POSITIVE ACTUALS. Hence it is basically saying that of all the positive actuals, what fraction of the them, were correctly predicted. 
+RECALL - What is the fraction of TRUE POSITIVE predictions wrt ALL the POSITIVE ACTUALS.
+Hence it is basically saying that of all the positive actuals, what fraction of the them, were correctly predicted.
 
-The first (PRECISION) one says how many TRUE POSITIVES were there in the entire predictions that were undertaken yielded POSITIVE. And the second (RECALL) one says how many TRUE POSITIVES were there in the entire TRUE cases.  
+In other words, first (PRECISION) one says how many TRUE POSITIVES were there in the entire predictions that were undertaken yielded POSITIVE.
+And the second (RECALL) one says how many TRUE POSITIVES were there in the entire TRUE cases.
 
-PRECISION -> PREDICTION -> Universal set is All "POSITIVE" Predictions. 
-RECALL    -> REALITY    -> Universal set is All "TRUE" Cases.           
-NOTE - In both the above cases, we are trying to use PREDICTIONS to denote the metrics. So, the reality is represented as true positives + false negatives. And prediction is represented by true positives + false positives. 
-What you see in the cells below is nothing but the digrammatic representation of the PREDICTIONS. It is only that the predictions can be true positive, false positive, false negative and true negative. 
+PRECISION -> PREDICTION -> Universal set is All "POSITIVE" Predictions.
+RECALL    -> REALITY    -> Universal set is All "TRUE" Cases.
+NOTE - In both the above cases, we are trying to use PREDICTIONS to denote the metrics.
+So, the reality is represented as true positives + false negatives. And prediction is represented by true positives + false positives.
+What you see in the cells below is nothing but the diagrammatic representation of the PREDICTIONS.
+It is only that the predictions can be true positive, false positive, false negative and true negative.
 
              ACTUAL CLASS
             1             0
@@ -144,20 +155,21 @@ P     ---------------------------
 R C   |   True      |  False    |
 E L 1 |   Positive  |  Positive | ==> All the cases of predicted positives. [domain for Precision]
 D A   |-------------------------|
-I S 0 |  False      | True      | 
+I S 0 |  False      | True      |
 C S   |  Negative   | Negative  |
 T     ---------------------------
            ||
        All cases of actual positives. [domain of recall]
-        
-        
+
+
 
 1. Precision = # "TRUE" "POSITIVES" / (# "TRUE" "POSITIVES" + # "FALSE" "POSITIVES" )
 [Of ALL the patients we have PREDICTED "POSITIVE" for cancer, what fraction that we "CORRECTLY" "PREDICT" (TRUE POSITIVE) as having cancer]
-[This gives the fraction of "True-Positives", for all the cases of "Positives". Precision is all about the positive predictions. It does not say anything about the negative predictions. So, it just gives you the power of the algorithm only for the cases which are predicted positively]
+[This gives the fraction of "True-Positives", for all the cases of "Positives". Precision is all about the positive predictions.
+It does not say anything about the negative predictions. So, it just gives you the power of the algorithm only for the cases which
+are predicted positively]
 [PRECISION is a measure of POSITIVE PREDICTIONS which are TRUE in the crowd of all the POSITIVE PREDICTIONS.]
 
 2. Recall = # "TRUE" "POSITIVES" / # "TRUE"
           = # "TRUE" "POSITIVES" / (# "TRUE" "POSITIVES" + "FALSE" "NEGATIVES")
-[Of ALL the patients that actually have cancer (TRUE), what fraction did we correctly PREDICT AS POSITIVE as having cancer] 
-
+[Of ALL the patients that actually have cancer (TRUE), what fraction did we correctly PREDICT AS POSITIVE as having cancer]
