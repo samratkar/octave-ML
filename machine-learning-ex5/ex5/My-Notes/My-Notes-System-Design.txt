@@ -195,8 +195,4 @@ with increase in the training set when we plot the learning curve.
 L - When you build the model use only the parameters that are good to predict y, and use as many as those.
 So, vital and many X is a sure shot secret to make good models.
 
-M - For skewed data you might get an high accuracy, but the precision might be bad.
-
-N - For a good model it does not matter whether the training set is skewed or not. Skeweness of the data might make
-it difficult to diagnose whether the model is good or not. But if the model is really good, it does not matter if
-the data is skewed or not.
+M - For skewed data you might get an high accuracy
