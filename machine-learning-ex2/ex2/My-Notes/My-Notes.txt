@@ -50,6 +50,9 @@ J(theta) = 1/m sigma(-log(h(x))) for y = 1
 J(theta) = 1/m sigma(-log(1-h(x))) for y = 0
 Putting them together the cost function becomes -
 J = 1/m(sigma(-y*log(h) - (1-y) * log(1-h)))
+if we vectorize this, it will become -
+J = 1/m ( -y' * log(h(x)) - (1-y)' * log(1-h(x)) )
+=> J = 1/m * (-y' * log(sigmoid(X * theta)) - (1-y)' * log(1-(sigmoid(X*theta))));
 
 Due to this uniqueness of the cost function, we will continue to use it to train the model to identify
 the correct theta matrix. But then it will never give the exact precise times the model is failing on the
