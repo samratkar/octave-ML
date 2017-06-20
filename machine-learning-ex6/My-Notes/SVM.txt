@@ -1,2 +1,6 @@
-SVM is a simplified logistic regression. We start with the modification of the cost function of logistic regression to fit the SVM.
-Jtheta of logistic regression = 
+SVM is a sophisticated classification model that can provide a high margin for the boundary line. The derivation of the SVM is detailed in the notebook.
+This derivation is wrt the class of Prof Patrick Winston. Now, I have to reconcile with what he taught and what Andrew is teaching.
+Till now, I have been able to reconcile that in both the cases, they arrived at the optimization objective function as same as
+||theta||^2/2
+THis has to be minimized, keeping the constraints intact. To do this Patrick used Langrage's equation.
+Let me see what Andrew does.
