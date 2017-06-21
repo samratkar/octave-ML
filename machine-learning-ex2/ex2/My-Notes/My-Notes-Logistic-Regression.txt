@@ -1,3 +1,17 @@
+-------------------------------------------------------------
+BOUNDARY CONDITION / BOUNDARY EQUATION / BOUNDARY VALUES
+-------------------------------------------------------------
+Logistic regression is all about classification. Hence it is all about identifying the most optimal boundary
+condition / boundary equation / boundary values, that classify the positives and negatives correctly.
+When we identify the regression equation in a logistic regression, we are identifying exactly this boundary
+condition/equation.
+
+THe same is true for SVMs and neural nets. Gradient descent is all about optimization of theta so that we
+finally determine a boundary equation. This is IMPORTANT.
+
+
+
+
 ----------------------------------------------------------------
 Cost function of logistic regression
 ----------------------------------------------------------------
