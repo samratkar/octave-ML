@@ -1,0 +1,23 @@
+----------------------
+SVM intro
+-----------------------
+SVM is a sophisticated classification model that can provide a high margin for the boundary line. The derivation of the SVM is detailed in the notebook.
+This derivation is wrt the class of Prof Patrick Winston. Now, I have to reconcile with what he taught and what Andrew is teaching.
+Till now, I have been able to reconcile that in both the cases, they arrived at the optimization objective function as same as
+||theta||^2/2
+THis has to be minimized, keeping the constraints intact. To do this Patrick used Langrage's equation.
+Let me see what Andrew does.
+
+-------------------------------------------------------------
+BOUNDARY CONDITION / BOUNDARY EQUATION / BOUNDARY VALUES
+-------------------------------------------------------------
+SVM is all about classification with the widest possible boundary region, with the boundary equation at its center.
+Hence it is all about identifying the most optimal boundary condition / boundary equation / boundary values, that
+classify the positives and negatives correctly. When we identify the regression equation in an SVM, we are identifying
+exactly this boundary condition/equation.
+
+THe same is true for logistic regression and neural nets. Gradient descent is all about optimization of theta so that we
+finally determine a boundary equation. This is IMPORTANT.
+
+The only difference in the case of the SVM is that the optimization problem is bounded by a constraint. The constraint is that
+the width of the boundary region is 1, ranging from -1 to +1. Since this is a bounded optimization problem, it uses lagrangian multipliers.

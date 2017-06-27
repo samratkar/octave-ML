@@ -1,2 +1,0 @@
-SVM is a simplified logistic regression. We start with the modification of the cost function of logistic regression to fit the SVM.
-Jtheta of logistic regression = 
