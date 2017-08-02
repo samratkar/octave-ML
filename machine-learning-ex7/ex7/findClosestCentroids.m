@@ -10,7 +10,7 @@ K = size(centroids, 1);
 
 % You need to return the following variables correctly.
 idx = zeros(size(X,1), 1);
-
+m = size(X,1);
 % ====================== YOUR CODE HERE ======================
 % Instructions: Go over every example, find its closest centroid, and store
 %               the index inside idx at the appropriate location.
@@ -20,12 +20,21 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
-
-
-
-
+for i = 1 : m 
+  %both the below formulae will work. You can also use abs() instead of norm
+  %min_dist = sqrt((centroids(1,:)-X(i,:))*(centroids(1,:)-X(i,:))');
+  min_dist = norm(centroids(1,:)-X(i,:));
+  min_idx = 1;
+  for j = 2 : K
+     %dist = sqrt((centroids(j,:)-X(i,:))*(centroids(j,:)-X(i,:))');
+     dist = norm(centroids(j,:)-X(i,:));
+     if (dist < min_dist)
+        min_dist = dist;   
+        min_idx = j;
+     endif 
+  endfor 
+  idx(i) = min_idx;
+endfor
 
 % =============================================================
 
