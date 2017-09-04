@@ -128,7 +128,7 @@ We use terms as follows to depict the combination of how the predicted and actua
 The second term says what is the value of prediction - 1 or zero - positive or negative.
 So, the metrics is about knowing how the prediction is faring well wrt actual data.
 
-Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES.
+Note that in the metrics introduced below, we only consider the fraction of TRUE POSITIVES predictions.
 One is in the context of total POSITIVE PREDICTIONS (Precision), measuring the efficiency of the positive predictions.
 The other is in the context of total POSITIVE ACTUAL OUTCOMES (Recall). It measures how much the model was able to recall what actually happened.
 
@@ -196,3 +196,5 @@ L - When you build the model use only the parameters that are good to predict y,
 So, vital and many X is a sure shot secret to make good models.
 
 M - For skewed data you might get an high accuracy
+
+N - If the data set is huge, you can safely add more features and also higher order features. This is because having a large training set alleviates the problem of overfitting. 
